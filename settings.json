@@ -1,0 +1,125 @@
+{
+  // ---------- Language ----------
+  "[tex]": {
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.tabSize": 2
+  },
+  "[latex]": {
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.tabSize": 2
+  },
+  "[bibtex]": {
+    "editor.tabSize": 2
+  },
+
+  // ---------- LaTeX Workshop ----------
+  "latex-workshop.intellisense.package.enabled": true,
+
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.aux",
+    "*.bbl",
+    "*.blg",
+    "*.idx",
+    "*.ind",
+    "*.lof",
+    "*.lot",
+    "*.out",
+    "*.toc",
+    "*.acn",
+    "*.acr",
+    "*.alg",
+    "*.glg",
+    "*.glo",
+    "*.gls",
+    "*.ist",
+    "*.fls",
+    "*.log",
+    "*.fdb_latexmk",
+    "*.snm",
+    "*.nav",
+    "*.dvi",
+    "*.synctex.gz"
+  ],
+
+  // 指定输出目录（与 latexmk 的 -outdir 相对应）
+  "latex-workshop.latex.outDir": "./out",
+
+  // PDF 预览方式：在 VS Code 标签页中打开
+  "latex-workshop.view.pdf.viewer": "tab",
+
+  // ---------- 关键改动：使用 latexmk (xelatex) ----------
+  // 1) 定义编译配方
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (xelatex)",
+      "tools": [
+        "latexmk-xelatex"
+      ]
+    }
+  ],
+  // 2) 定义编译工具（tools）
+  //    latexmk 会自动调用 bibtex/biber 并进行多次编译，只需指定 -xelatex
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk-xelatex",
+      "command": "latexmk",
+      "args": [
+        "-xelatex",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=out",
+        "%DOC%"
+      ]
+    }
+  ],
+
+  // 启用自动编译（检测文件变化）
+  "latex-workshop.latex.autoBuild.run": "onFileChange",
+
+  // 自动保存时触发编译
+  "latex-workshop.latex.autoBuild.onSave.enabled": true,
+
+  // 自动保存时间间隔，单位为毫秒
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 500,
+
+  // 设置持续编译模式
+  "latex-workshop.latex.watch.enabled": true,
+  
+  // 保存触发编译后，自动执行一次 SyncTeX
+  "latex-workshop.synctex.afterBuild.enabled": true,
+
+  // ---------- 其余通用配置 ----------
+  "explorer.confirmDelete": false,
+  "editor.wordWrap": "on",
+  "workbench.colorTheme": "Default Dark+",
+  "window.autoDetectColorScheme": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "workbench.editor.enablePreview": false,
+  "editor.fontSize": 18,
+  "workbench.preferredLightColorTheme": "Monokai",
+
+  /* ----- 拼写 & LT  ----- */
+  "cSpell.language": "en-US",
+  "cSpell.userWords": ["skyrmion","Brillouin","Weyl","Ce3+"],
+  "languagetool.language": "en-US",
+  "languagetool.runAfterSave": true,                      // 保存即检查语法
+
+  /* ----- 写作可视舒适度 ----- */
+  "editor.rulers": [80, 120],                             // 期刊常见 80/120 列对齐线
+  "editor.lineHeight": 24,
+  "workbench.colorCustomizations": {                      // 状态栏学术绿
+    "statusBar.background": "#00695C",
+    "statusBar.noFolderBackground": "#00695C"
+  },
+
+  /* ----- 快捷键提醒（仅注释说明）-----
+     ⇧⌘P    ：命令面板
+     ⌘⌥J    ：SyncTeX from Cursor（若冲突可自设）
+     ⌘⇧.    ：切换侧边栏 Markdown/LaTeX 预览
+  ----------------------------------- */
+}
+
+
+
