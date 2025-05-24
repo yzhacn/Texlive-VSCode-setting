@@ -52,25 +52,39 @@
 // ① 编译工具
   "latex-workshop.latex.tools": [
     {
-      "name": "latexmk-pdf",
+      "name": "pdf",
       "command": "latexmk",
-      "args": ["-pdf","-synctex=1","-interaction=nonstopmode","-file-line-error","-outdir=out","%DOC%"]
+      "args": [
+        "-pdf",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ]
     },
     {
-      "name": "latexmk-xe",
+      "name": "xe",
       "command": "latexmk",
-      "args": ["-xelatex","-synctex=1","-interaction=nonstopmode","-file-line-error","-outdir=out","%DOC%"]
+      "args": [
+        "-xelatex",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ]
     }
   ],
 
   // ② 编译配方
   "latex-workshop.latex.recipes": [
-    { "name": "latexmk (pdfLaTeX)", "tools": ["latexmk-pdf"] },
-    { "name": "latexmk (XeLaTeX)",  "tools": ["latexmk-xe"]  }
+    { "name": "pdf", "tools": ["pdf"] },
+    { "name": "xe",  "tools": ["xe"]  }
   ],
 
   // ③ 默认使用哪一条（可换成 pdfLaTeX）
-  "latex-workshop.latex.recipe.default": "latexmk (pdfLaTeX)",
+  "latex-workshop.latex.recipe.default": "pdf",
   "latex-workshop.latex.build.forceRecipeUsage": false,  // 允许 magic comment
 
   // 启用自动编译（检测文件变化）
@@ -81,10 +95,8 @@
 
   // 自动保存时间间隔，单位为毫秒
   "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 2000,
+  "files.autoSaveDelay": 1000,
 
-  // 设置持续编译模式
-  "latex-workshop.latex.watch.enabled": true,
   
   // 保存触发编译后，自动执行一次 SyncTeX
   "latex-workshop.synctex.afterBuild.enabled": true,
