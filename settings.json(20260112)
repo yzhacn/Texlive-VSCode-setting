@@ -1,0 +1,213 @@
+{
+  // ============================================================
+  // 0) 重要说明 / Important note
+  // ------------------------------------------------------------
+  // VS Code 的 settings.json 支持 JSON with Comments (JSONC)：
+  // 允许 // 与 /* */ 注释，也允许你用分段注释来维护配置。
+  // ============================================================
+
+  // ============================================================
+  // 1) Language-specific settings（语言/文件类型专用设置）
+  // ============================================================
+
+  // TeX 文件（某些插件会把 TeX 识别为 "tex"）
+  "[tex]": {
+    // 允许 snippets 提示与普通建议并行
+    // Allow snippets and quick suggestions to coexist
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+
+    // Tab 缩进宽度 / Tab size
+    "editor.tabSize": 2
+  },
+
+  // LaTeX 文件（多数情况下 .tex 会走这个）
+  "[latex]": {
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.tabSize": 2
+  },
+
+  // BibTeX 文件（.bib）
+  "[bibtex]": {
+    "editor.tabSize": 2
+  },
+
+  // ============================================================
+  // 2) LaTeX Workshop（编译/清理/预览/SyncTeX）
+  // ============================================================
+
+  // ---------- IntelliSense ----------
+  // 包级别补全 / Package intellisense
+  "latex-workshop.intellisense.package.enabled": true,
+
+  // ---------- Clean（清理辅助文件） ----------
+  // LaTeX Workshop 的 clean 会删除这些后缀匹配的文件
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.aux",
+    "*.bbl",
+    "*.blg",
+    "*.idx",
+    "*.ind",
+    "*.lof",
+    "*.lot",
+    "*.out",
+    "*.toc",
+    "*.acn",
+    "*.acr",
+    "*.alg",
+    "*.glg",
+    "*.glo",
+    "*.gls",
+    "*.ist",
+    "*.fls",
+    "*.log",
+    "*.fdb_latexmk",
+    "*.snm",
+    "*.nav",
+    "*.dvi",
+    "*.synctex.gz"
+  ],
+
+  // 输出目录 / Output directory
+  // 与 latexmk 的 -outdir 对应
+  "latex-workshop.latex.outDir": "%DIR%/out",
+
+  // 这项在部分版本里属于历史/兼容设置（SynctexJS）
+  // Legacy/compat setting in some versions
+  "latex-workshop.synctex.synctexjs.enabled": true,
+
+  // 自动清理运行策略 / Auto clean policy
+  // "never" 表示不会自动 clean（你需要手动 clean）
+  "latex-workshop.latex.autoClean.run": "never",
+
+  // ---------- PDF Viewer（PDF 预览器） ----------
+  // 用 VS Code 标签页内置方式打开 PDF（LaTeX Workshop internal viewer）
+  "latex-workshop.view.pdf.viewer": "tab",
+
+  // ---------- 关键：确保 *.pdf 默认用 LaTeX Workshop 的 PDF 预览器打开 ----------
+  // Key: Force PDFs to open with LaTeX Workshop's internal viewer
+  //
+  // 否则你从文件树直接点 out/*.pdf 时，可能会走 VS Code 默认 PDF 预览器，
+  // 结果就是：PDF 上的点击不会触发 LaTeX Workshop 的 SyncTeX（看起来像“突然坏了”）。
+  "workbench.editorAssociations": {
+    "*.pdf": "latex-workshop-pdf-hook"
+  },
+
+  // ---------- 关键：反向 SyncTeX（PDF -> TeX）触发方式 ----------
+  // Backward/Reverse SyncTeX trigger (PDF -> source)
+  //
+  // 可选值（LaTeX Workshop 内置预览器）：
+  //  - "ctrl-click"   ：按住 Control 再点击（默认行为）
+  //  - "double-click" ：双击（更省心，且不与 macOS 的 cmd+click 习惯冲突）
+  //
+  // 你原先习惯用 “cmd+click”，但这里官方提供的是 ctrl-click / double-click。
+  // 建议：想要“无修饰键”体验就用 double-click。
+  "latex-workshop.view.pdf.internal.synctex.keybinding": "ctrl-click",
+  // "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
+
+  // ---------- 编译工具：latexmk ----------
+  // 你定义了两套工具：
+  //  - pdf：latexmk -pdf（通常走 pdflatex）
+  //  - xe ：latexmk -xelatex（走 xelatex）
+  "latex-workshop.latex.tools": [
+    {
+      "name": "pdf",
+      "command": "latexmk",
+      "args": [
+        "-pdf",
+        "-synctex=1",                 // 生成 SyncTeX 信息 / generate synctex
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=%OUTDIR%",           // 输出目录（对应 outDir）/ output dir
+        "%DOC%"                       // 主文档 / main doc
+      ]
+    },
+    {
+      "name": "xe",
+      "command": "latexmk",
+      "args": [
+        "-xelatex",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ]
+    }
+  ],
+
+  // ---------- 编译配方（recipes） ----------
+  // recipes 是“工具序列”（可由多个 tools 组成）
+  "latex-workshop.latex.recipes": [
+    { "name": "pdf", "tools": ["pdf"] },
+    { "name": "xe",  "tools": ["xe"]  }
+  ],
+
+  // 默认配方 / default recipe
+  "latex-workshop.latex.recipe.default": "xe",
+
+  // 是否强制使用 recipe（false 表示允许 magic comment 覆盖）
+  // Force recipe usage (false allows magic comments)
+  "latex-workshop.latex.build.forceRecipeUsage": false,
+
+  // ---------- 自动编译 ----------
+  // onFileChange：文件变化就编译（你选择了更激进的模式）
+  "latex-workshop.latex.autoBuild.run": "onFileChange",
+
+  // 保存触发编译（有些版本这项是历史项，但保留无妨）
+  "latex-workshop.latex.autoBuild.onSave.enabled": true,
+
+  // ---------- Auto Save（自动保存） ----------
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+
+  // ---------- After Build SyncTeX（编译后自动同步） ----------
+  // TeX -> PDF：编译完成后，自动把 PDF 定位到光标附近
+  "latex-workshop.synctex.afterBuild.enabled": true,
+
+  // ============================================================
+  // 3) VS Code 通用配置 / General editor settings
+  // ============================================================
+
+  "explorer.confirmDelete": false,
+  "editor.wordWrap": "on",
+  "workbench.colorTheme": "Default Dark+",
+  "window.autoDetectColorScheme": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "workbench.editor.enablePreview": false,
+  "editor.fontSize": 18,
+
+  // macOS 自动切换浅色主题时使用
+  "workbench.preferredLightColorTheme": "Monokai",
+
+  // ============================================================
+  // 4) 拼写 & LanguageTool（英文写作辅助）
+  // ============================================================
+
+  "cSpell.language": "en-US",
+  "cSpell.userWords": ["skyrmion", "Brillouin", "Weyl", "Ce3+"],
+
+  // LanguageTool：保存后检查语法
+  "languagetool.language": "en-US",
+  "languagetool.runAfterSave": true,
+
+  // ============================================================
+  // 5) 写作可视舒适度 / Writing ergonomics
+  // ============================================================
+
+  // 期刊写作常见标尺线（80/120列）
+  "editor.rulers": [80, 120],
+  "editor.lineHeight": 24,
+
+  // 状态栏配色（你自定义的“学术绿”）
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#80df20",
+    "statusBar.noFolderBackground": "#1dd0a3"
+  }
+
+  // ------------------------------------------------------------
+  // 快捷键提示（注释说明）
+  // ⇧⌘P  ：命令面板 / Command Palette
+  // ⌘⌥J  ：SyncTeX from Cursor（若冲突可自设）/ Forward SyncTeX
+  // ⌘⇧.  ：切换侧边栏 Markdown/LaTeX 预览（依你的扩展可能不同）
+  // ------------------------------------------------------------
+}
